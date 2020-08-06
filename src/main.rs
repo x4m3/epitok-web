@@ -24,7 +24,7 @@ async fn main() -> Result<()> {
 
     let app = HttpServer::new(move || {
         App::new()
-            .wrap(middleware::Logger::new("[HTTP %s] [URL %U]"))
+            .wrap(middleware::Logger::new("[HTTP %s] [TOOK %Dms] [URL %U]"))
             .service(root)
     });
 
