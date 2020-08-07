@@ -1,6 +1,7 @@
+mod auth;
 mod root;
 
-use actix_web::{middleware, App, HttpServer};
+use actix_web::{middleware, web, App, HttpServer};
 use std::{env, io::Result, net::SocketAddr};
 
 #[macro_use]
@@ -20,9 +21,10 @@ async fn main() -> Result<()> {
 
     let app = HttpServer::new(move || {
         App::new()
-            .wrap(middleware::Logger::new("[HTTP %s] [TOOK %Dms] [URL %U]"))
+            .wrap(middleware::Logger::new("[TOOK %Dms] [RETURNED HTTP %s] %r"))
             .service(actix_files::Files::new("/static", "static"))
-            .service(crate::root::root)
+            .route("/", web::get().to(crate::root::root))
+            .route("/auth/signin", web::post().to(crate::auth::sign_in))
     });
 
     info!("starting server on http://localhost:{}", port);

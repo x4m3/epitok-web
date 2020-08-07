@@ -16,3 +16,5 @@ askama = "0.10.3"
 # environment
 env_logger = "0.7.1"
 log = "0.4.11"
+
+serde = "1.0.114"

@@ -589,6 +589,7 @@ dependencies = [
  "askama",
  "env_logger",
  "log",
+ "serde",
 ]
 
 [[package]]
