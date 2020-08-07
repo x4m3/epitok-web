@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+{% include "head.html" %}
+<body>
+{% include "navbar.html" %}
+<div id="main" class="container">
+    <h1>epitok</h1>
+    <h3>Welcome</h3>
+
+    <p>Welcome to epitok! It's a tool to replace tokens at Epitech.</p>
+
+    <h3>Sign in</h3>
+    <p>
+        Sign in with your Epitech intra account using your autologin link.
+        Get it using the button bellow:
+    </p>
+    <a class="custom-shadow btn btn-outline-primary" role="button" href="https://intra.epitech.eu/admin/autolog"
+       aria-pressed="true" target="_blank" style="margin-top: 0">Autologin link -></a>
+
+    <form id="loginForm" action="/auth/signin" method="post" enctype="application/x-www-form-urlencoded">
+        <div class="form-group">
+            <input id="autologinInput" class="form-control" type="url" placeholder="Enter autologin link" aria-describedby="autologinHelp" required>
+            <small id="autologinHelp" class="form-text text-muted">Your autologin link is stored on your device as a cookie. <b>epitok</b> doesn't log any private information.</small>
+        </div>
+        <button class="custom-shadow btn btn-outline-primary" type="submit">Sign in</button>
+    </form>
+</div>
+{% include "footer.html" %}
+</body>
+</html>

@@ -1,14 +1,10 @@
-use actix_web::{get, middleware, App, HttpResponse, HttpServer, Responder};
+mod root;
+
+use actix_web::{middleware, App, HttpServer};
 use std::{env, io::Result, net::SocketAddr};
 
 #[macro_use]
 extern crate log;
-
-#[get("/")]
-async fn root() -> impl Responder {
-    let body = format!("{} - {}", env!("CARGO_PKG_NAME"), env!("CARGO_PKG_VERSION"));
-    HttpResponse::Ok().body(body)
-}
 
 #[actix_rt::main]
 async fn main() -> Result<()> {
@@ -25,7 +21,8 @@ async fn main() -> Result<()> {
     let app = HttpServer::new(move || {
         App::new()
             .wrap(middleware::Logger::new("[HTTP %s] [TOOK %Dms] [URL %U]"))
-            .service(root)
+            .service(actix_files::Files::new("/static", "static"))
+            .service(crate::root::root)
     });
 
     info!("starting server on http://localhost:{}", port);
