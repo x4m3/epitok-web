@@ -9,6 +9,7 @@ edition = "2018"
 actix-web = "2.0.0"
 actix-rt = "1.1.1"
 actix-files = "0.2.2"
+serde = "1.0.114"
 
 # templating
 askama = "0.10.3"
@@ -17,4 +18,6 @@ askama = "0.10.3"
 env_logger = "0.7.1"
 log = "0.4.11"
 
-serde = "1.0.114"
+# epitok
+epitok = { path = "../epitok" }
+#epitok = { git = "https://github.com/x4m3/epitok" }
