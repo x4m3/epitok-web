@@ -12,9 +12,6 @@ pub async fn root() -> impl Responder {
         Ok(content) => HttpResponse::Ok().content_type("text/html").body(content),
         Err(e) => HttpResponse::InternalServerError()
             .content_type("text/html")
-            .body(format!(
-                "<code>Internal server error: could not render template: {}</code>",
-                e
-            )),
+            .body(format!("Could not render template: <code>{}</code>", e)),
     }
 }

@@ -21,7 +21,7 @@ async fn main() -> Result<()> {
 
     let app = HttpServer::new(move || {
         App::new()
-            .wrap(middleware::Logger::new("[TOOK %Dms] [RETURNED HTTP %s] %r"))
+            .wrap(middleware::Logger::new("[RETURNED HTTP %s] [TOOK %Dms] %r"))
             .service(actix_files::Files::new("/static", "static"))
             .route("/", web::get().to(crate::root::root))
             .route("/auth/signin", web::post().to(crate::auth::sign_in))

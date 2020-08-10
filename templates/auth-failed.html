@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+{% include "head.html" %}
+<body>
+{% include "navbar.html" %}
+<div id="main" class="container">
+    <h1>epitok</h1>
+    <h3>Failed to sign in</h3>
+
+    <h4>Reason</h4>
+    <code>{{ reason }}</code>
+
+    <div>
+        <button id="go-back" class="custom-shadow btn btn-outline-primary">Go back home</button>
+    </div>
+</div>
+{% include "footer.html" %}
+
+<script>
+    document.getElementById('go-back').addEventListener('click', () => {
+        history.back();
+    });
+</script>
+
+</body>
+</html>
