@@ -644,6 +644,7 @@ dependencies = [
  "env_logger",
  "epitok",
  "log",
+ "rand",
  "serde",
 ]
 

@@ -34,28 +34,13 @@ pub async fn sign_in(form: web::Form<FormData>, id: Identity) -> impl Responder 
         };
     };
 
-    let autologin = match auth.autologin() {
-        Some(autologin) => autologin,
-        None => {
-            return HttpResponse::InternalServerError()
-                .content_type("text/html")
-                .body("oops wtf");
-        }
-    };
-    let login = match auth.login() {
-        Some(login) => login,
-        None => {
-            return HttpResponse::InternalServerError()
-                .content_type("text/html")
-                .body("oops wtf");
-        }
-    };
-    let id_new = format!("{}!#{}", login, autologin);
-    id.remember(id_new);
+    if !crate::cookie::set(id, auth) {
+        return HttpResponse::InternalServerError()
+            .content_type("text/html")
+            .body("failed to complete sign in (cookies)");
+    }
 
-    HttpResponse::Ok()
-        .content_type("text/html")
-        .body(format!("autologin {}, login {}", autologin, login))
+    HttpResponse::Ok().content_type("text/html").body("ok")
 
     // TODO: redirection to home page (either http redirect or callback page with html redirection)
 

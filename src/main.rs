@@ -1,9 +1,10 @@
 mod auth;
+mod cookie;
 mod root;
-mod utils;
 
-use actix_identity::{CookieIdentityPolicy, Identity, IdentityService};
+use actix_identity::{CookieIdentityPolicy, IdentityService};
 use actix_web::{middleware, web, App, HttpServer};
+use rand::Rng;
 use std::{env, io::Result, net::SocketAddr};
 
 #[macro_use]
@@ -21,35 +22,25 @@ async fn main() -> Result<()> {
         Err(_) => 4343,
     };
 
+    // Generate a random 32 byte key for cookies
+    let cookies_private_key = rand::thread_rng().gen::<[u8; 32]>();
+
     let app = HttpServer::new(move || {
         App::new()
-            .wrap(middleware::Logger::new("[RETURNED HTTP %s] [TOOK %Dms] %r"))
             .wrap(IdentityService::new(
-                CookieIdentityPolicy::new(&[0; 32])
+                CookieIdentityPolicy::new(&cookies_private_key)
                     .name("epitok-auth")
                     .secure(false),
             ))
+            .wrap(middleware::Logger::new("[RETURNED HTTP %s] [TOOK %Dms] %r"))
             .service(actix_files::Files::new("/static", "static"))
             .route("/", web::get().to(crate::root::root))
             .route("/auth/signin", web::get().to(crate::root::root))
             .route("/auth/signin", web::post().to(crate::auth::sign_in))
-            .route("/auth/test", web::get().to(auth_test))
     });
 
     info!("starting server on http://localhost:{}", port);
 
     let addr = SocketAddr::from(([0, 0, 0, 0], port));
     app.bind(addr)?.run().await
-}
-
-async fn auth_test(id: Identity) -> Result<String> {
-    if let Some(id) = id.identity() {
-        Ok(format!(
-            "autologin: {} === login: {}",
-            crate::utils::cookie_get_autologin(&id),
-            crate::utils::cookie_get_login(&id)
-        ))
-    } else {
-        Ok("wassup anon".to_owned())
-    }
 }

@@ -11,6 +11,7 @@ actix-rt = "1.1.1"
 actix-files = "0.2.2"
 actix-identity = "0.2.1"
 serde = "1.0.114"
+rand = "0.7.3"
 
 # templating
 askama = "0.10.3"
