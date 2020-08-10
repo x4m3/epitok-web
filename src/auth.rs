@@ -1,3 +1,4 @@
+use actix_identity::Identity;
 use actix_web::{web, HttpResponse, Responder};
 use askama::Template;
 use epitok::auth::Auth;
@@ -14,7 +15,7 @@ struct AuthFailedTemplate {
     reason: String,
 }
 
-pub async fn sign_in(form: web::Form<FormData>) -> impl Responder {
+pub async fn sign_in(form: web::Form<FormData>, id: Identity) -> impl Responder {
     let mut auth = Auth::new();
 
     // Try to sign in, if it fails, render the auth failed page
@@ -49,10 +50,14 @@ pub async fn sign_in(form: web::Form<FormData>) -> impl Responder {
                 .body("oops wtf");
         }
     };
-
-    // TODO: set cookies with autologin and login
+    let id_new = format!("{}!#{}", login, autologin);
+    id.remember(id_new);
 
     HttpResponse::Ok()
         .content_type("text/html")
         .body(format!("autologin {}, login {}", autologin, login))
+
+    // TODO: redirection to home page (either http redirect or callback page with html redirection)
+
+    // TODO: sign out
 }
