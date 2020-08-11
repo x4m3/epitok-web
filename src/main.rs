@@ -37,6 +37,7 @@ async fn main() -> Result<()> {
             .route("/", web::get().to(crate::root::root))
             .route("/auth/signin", web::get().to(crate::root::root))
             .route("/auth/signin", web::post().to(crate::auth::sign_in))
+            .route("/auth/signout", web::get().to(crate::auth::sign_out))
     });
 
     info!("starting server on http://localhost:{}", port);

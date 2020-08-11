@@ -40,9 +40,10 @@ pub async fn sign_in(form: web::Form<FormData>, id: Identity) -> impl Responder 
             .body("failed to complete sign in (cookies)");
     }
 
-    HttpResponse::Ok().content_type("text/html").body("ok")
+    HttpResponse::Found().header("location", "/").finish()
+}
 
-    // TODO: redirection to home page (either http redirect or callback page with html redirection)
-
-    // TODO: sign out
+pub async fn sign_out(id: Identity) -> impl Responder {
+    id.forget();
+    HttpResponse::Found().header("location", "/").finish()
 }
