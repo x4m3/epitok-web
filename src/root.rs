@@ -34,22 +34,11 @@ struct HomePageTemplate<'a> {
 async fn home_page(id: String) -> HttpResponse {
     let mut events = Vec::new();
     // if let Err(e) = list_events_today(&mut events, crate::cookie::get_autologin(&id)).await
-    if let Err(e) = list_events(&mut events, crate::cookie::get_autologin(&id), "2020-06-15").await
+    if let Err(e) = list_events(&mut events, crate::cookie::get_autologin(&id), "2020-02-04").await
     {
         return HttpResponse::InternalServerError()
             .content_type("text/html")
             .body(format!("could not get list of events from intra: {}", e));
-    }
-
-    for event in &events {
-        println!(
-            "code: {}\ntitle: {}\nmodule: {}\nstart: {}\nend: {}\n",
-            event.code(),
-            event.title(),
-            event.module(),
-            event.start(),
-            event.end(),
-        );
     }
 
     let content = HomePageTemplate {

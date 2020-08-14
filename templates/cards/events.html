@@ -1,9 +1,15 @@
-{% for event in events %}
-    <div class="card">
-        <div class="card-body">
-            <h5 class="card-title">{{ event.title()|e }}</h5>
-            <h6 class="card-subtitle mb-2 text-muted">{{ event.module()|e }}</h6>
-            <p class="card-text"><b>{{ event.start()|e }}</b> - <b>{{ event.end()|e }}</b></p>
+<div class="row row-cols-1 row-cols-md-2">
+    {% for event in events %}
+    <div class="col">
+        <div class="card custom-shadow">
+            <div class="card-body">
+                <h5 class="card-title">{{ event.title()|e }}</h5>
+                <h6 class="card-subtitle mb-2 text-muted">{{ event.module()|e }}</h6>
+                <p class="card-text"><b>{{ event.start()|e }}</b> - <b>{{ event.end()|e }}</b></p>
+                <a class="card-link">Manage</a>
+                <a class="card-link" href="https://intra.epitech.eu{{ event.intra_page()|e }}">See on intra</a>
+            </div>
         </div>
     </div>
-{% endfor %}
+    {% endfor %}
+</div>
