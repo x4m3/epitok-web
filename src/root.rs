@@ -1,7 +1,7 @@
 use actix_identity::Identity;
 use actix_web::{HttpResponse, Responder};
 use askama::Template;
-use epitok::event::{list_events, list_events_today};
+use epitok::event::{list_events, list_events_today, Event};
 
 pub async fn root(id: Identity) -> impl Responder {
     match id.identity() {
@@ -28,11 +28,12 @@ fn sign_in_page() -> HttpResponse {
 #[template(path = "homepage.html")]
 struct HomePageTemplate<'a> {
     login: &'a str,
+    events: Vec<Event>,
 }
 
 async fn home_page(id: String) -> HttpResponse {
     let mut events = Vec::new();
-    // if let Err(e) = list_events_today(&mut events, crate::cookie::get_autologin(&id)).await {
+    // if let Err(e) = list_events_today(&mut events, crate::cookie::get_autologin(&id)).await
     if let Err(e) = list_events(&mut events, crate::cookie::get_autologin(&id), "2020-06-15").await
     {
         return HttpResponse::InternalServerError()
@@ -40,7 +41,7 @@ async fn home_page(id: String) -> HttpResponse {
             .body(format!("could not get list of events from intra: {}", e));
     }
 
-    for event in events {
+    for event in &events {
         println!(
             "code: {}\ntitle: {}\nmodule: {}\nstart: {}\nend: {}\n",
             event.code(),
@@ -53,6 +54,7 @@ async fn home_page(id: String) -> HttpResponse {
 
     let content = HomePageTemplate {
         login: crate::cookie::get_login(&id),
+        events,
     };
     match content.render() {
         Ok(content) => HttpResponse::Ok().content_type("text/html").body(content),

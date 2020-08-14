@@ -4,6 +4,11 @@
 <body>
 {% include "navbar.html" %}
 <div id="main" class="container">
+    {% if events.len() == 0 %}
+        {% include "cards/no-events.html" %}
+    {% else %}
+        {% include "cards/events.html" %}
+    {% endif %}
 </div>
 {% include "footer.html" %}
 </body>
