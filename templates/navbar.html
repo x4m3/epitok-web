@@ -1,3 +1,25 @@
 <nav class="navbar navbar-expand-sm navbar-light bg-light">
-    <a class="navbar-brand mb-0 h1" href="/">epitok</a>
+    <span class="navbar-brand mb-0 h1">epitok <span class="badge badge-secondary">nightly</span></span>
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar"
+            aria-expanded="false" aria-label="Toggle menu">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div id="navbar" class="collapse navbar-collapse">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="/">Home</a>
+            </li>
+        </ul>
+
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link text-primary" href="https://intra.epitech.eu/user/">{{ login }}</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-danger" href="/auth/signout">Sign out</a>
+            </li>
+        </ul>
+    </div>
 </nav>
