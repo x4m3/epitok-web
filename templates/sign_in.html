@@ -9,7 +9,14 @@
 
     <hr class="my-4">
 
+    <noscript>
+        <div class="alert alert-warning" role="alert">
+            Please enable JavaScript to use all features.
+        </div>
+    </noscript>
+
     <h2>Sign in</h2>
+
     <p>
         Use your Epitech intra account to sign in with an autologin link.
         Get it using the button bellow:
@@ -17,16 +24,44 @@
     <a class="custom-shadow btn btn-outline-primary" role="button" href="https://intra.epitech.eu/admin/autolog"
        aria-pressed="true" target="_blank" style="margin-top: 0">Autologin link (intra)</a>
 
-    <form id="loginForm" action="/auth/signin" method="post" enctype="application/x-www-form-urlencoded">
+    <form class="needs-validation" action="/auth/signin" method="post" enctype="application/x-www-form-urlencoded"
+          novalidate>
         <div class="form-group">
             <input id="autologinInput" class="form-control" type="text" name="autologin"
+                   pattern="^(https://intra.epitech.eu/auth-)([a-z0-9]{40})$"
                    placeholder="Enter autologin link" aria-describedby="autologinHelp" required>
+            <div class="invalid-feedback">Invalid format, please verify your autologin link.</div>
             <small id="autologinHelp" class="form-text text-muted">Your autologin link is stored on your device as a
                 cookie. <b>epitok</b> doesn't log any private information.</small>
         </div>
-        <button class="custom-shadow btn btn-outline-primary" type="submit">Sign in</button>
+
+        <button id="signin-button" class="custom-shadow btn btn-outline-primary" type="submit">Sign in</button>
     </form>
 </div>
+
+<script>
+    /* script to validate the autologin link */
+    (function () {
+            "use strict";
+            window.addEventListener("load", function () {
+                let forms = document.getElementsByClassName("needs-validation");
+                Array.prototype.filter.call(forms, function (form) {
+                    form.addEventListener("submit", function (event) {
+                        form.classList.add("was-validated");
+                        if (form.checkValidity() === true) {
+                            $('#signin-button').html('<span class="spinner-grow spinner-grow-sm mr-2" role="status" aria-hidden="true"></span>Signing in...').attr('disabled', true);
+                        } else {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+                    }, false);
+                });
+            }, false);
+        }
+    )();
+</script>
+
+
 {% include "footer.html" %}
 </body>
 </html>
