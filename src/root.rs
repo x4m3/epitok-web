@@ -29,6 +29,7 @@ fn sign_in_page() -> HttpResponse {
 struct HomePageTemplate<'a> {
     login: &'a str,
     events: Vec<Event>,
+    date: &'a str,
 }
 
 async fn home_page(id: String) -> HttpResponse {
@@ -41,9 +42,12 @@ async fn home_page(id: String) -> HttpResponse {
             .body(format!("could not get list of events from intra: {}", e));
     }
 
+    let formatted_date = chrono::Local::today().format("%A, %B %d").to_string();
+
     let content = HomePageTemplate {
         login: crate::cookie::get_login(&id),
         events,
+        date: &formatted_date,
     };
     match content.render() {
         Ok(content) => HttpResponse::Ok().content_type("text/html").body(content),

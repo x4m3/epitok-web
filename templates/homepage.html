@@ -4,6 +4,7 @@
 <body>
 {% include "navbar.html" %}
 <div id="main" class="container">
+    <h1 class="text-center display-4" style="margin-bottom: 1rem">{{ date }}</h1>
     {% if events.len() == 0 %}
         {% include "cards/no-events.html" %}
     {% else %}
