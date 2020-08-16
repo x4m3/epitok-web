@@ -1,5 +1,5 @@
 use actix_identity::Identity;
-use actix_web::{web, HttpResponse, Responder};
+use actix_web::{http, web, HttpResponse, Responder};
 use askama::Template;
 use epitok::auth::Auth;
 use serde::Deserialize;
@@ -40,10 +40,15 @@ pub async fn sign_in(form: web::Form<FormData>, id: Identity) -> impl Responder 
             .body("failed to complete sign in (cookies)");
     }
 
-    HttpResponse::Found().header("location", "/").finish()
+    HttpResponse::Found()
+        .header(http::header::LOCATION, "/")
+        .finish()
 }
 
 pub async fn sign_out(id: Identity) -> impl Responder {
     id.forget();
-    HttpResponse::Found().header("location", "/").finish()
+
+    HttpResponse::Found()
+        .header(http::header::LOCATION, "/")
+        .finish()
 }
