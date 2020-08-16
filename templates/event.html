@@ -4,7 +4,10 @@
 <body>
 {% include "navbar.html" %}
 <div id="main" class="container">
-    {% for student in students %}
+    <h1>{{ event.title()|e }}</h1>
+    <h2>{{ event.module()|e }}</h2>
+
+    {% for student in event.students %}
         <p>{{ student.get_login()|e }}</p>
     {% endfor %}
 </div>

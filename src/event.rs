@@ -1,7 +1,7 @@
 use actix_identity::Identity;
 use actix_web::{http, web, HttpResponse, Responder};
 use askama::Template;
-use epitok::student::{fetch_students, Student};
+use epitok::event::{get_event, Event};
 use serde::Deserialize;
 
 #[derive(Deserialize)]
@@ -26,31 +26,40 @@ pub async fn event(params: web::Path<Params>, id: Identity) -> impl Responder {
 #[template(path = "event.html")]
 struct EventTemplate<'a> {
     login: &'a str,
-    students: Vec<Student>,
+    event: Event,
 }
 
 async fn event_page(params: web::Path<Params>, id: String) -> HttpResponse {
-    let event_code = format!(
-        "/module/{}/{}/{}/{}/{}",
-        params.year, params.module, params.instance, params.acti, params.event
-    );
-
-    let mut students = Vec::new();
-    if let Err(e) = fetch_students(
-        &mut students,
+    let mut event = match get_event(
         crate::cookie::get_autologin(&id),
-        &event_code,
+        &params.year,
+        &params.module,
+        &params.instance,
+        &params.acti,
+        &params.event,
     )
     .await
     {
-        return HttpResponse::BadRequest()
+        Ok(event) => event,
+        Err(e) => {
+            return HttpResponse::InternalServerError()
+                .content_type("text/html")
+                .body(format!("could not get event: {}", e));
+        }
+    };
+
+    if let Err(e) = event
+        .fetch_students(crate::cookie::get_autologin(&id))
+        .await
+    {
+        return HttpResponse::InternalServerError()
             .content_type("text/html")
-            .body(format!("you made an invalid request: {}", e));
+            .body(format!("failed to get list of students: {}", e));
     }
 
     let content = EventTemplate {
         login: crate::cookie::get_login(&id),
-        students,
+        event,
     };
     match content.render() {
         Ok(content) => HttpResponse::Ok().content_type("text/html").body(content),
