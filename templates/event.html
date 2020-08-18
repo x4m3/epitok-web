@@ -6,10 +6,9 @@
 <div id="main" class="container">
     <h1>{{ event.title()|e }}</h1>
     <h2>{{ event.module()|e }}</h2>
+    <p>Starts at <b>{{ event.start()|e }}</b> and finishes at <b>{{ event.end()|e }}</b></p>
 
-    {% for student in event.students %}
-        <p>{{ student.get_login()|e }}</p>
-    {% endfor %}
+    {% include "cards/students.html" %}
 </div>
 {% include "footer.html" %}
 </body>

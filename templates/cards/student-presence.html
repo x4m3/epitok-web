@@ -1,0 +1,28 @@
+{% match student.get_presence() %}
+{% when epitok::student::Presence::Present %}
+<button type="button" class="btn btn-sm btn-outline-success active">Present</button>
+<button type="button" class="btn btn-sm btn-outline-danger">Missing</button>
+<button type="button" class="btn btn-sm btn-outline-warning">N/A</button>
+<button type="button" class="btn btn-sm btn-outline-secondary">None</button>
+{% when epitok::student::Presence::Missing %}
+<button type="button" class="btn btn-sm btn-outline-success">Present</button>
+<button type="button" class="btn btn-sm btn-outline-danger active">Missing</button>
+<button type="button" class="btn btn-sm btn-outline-warning">N/A</button>
+<button type="button" class="btn btn-sm btn-outline-secondary">None</button>
+{% when epitok::student::Presence::NotApplicable %}
+<button type="button" class="btn btn-sm btn-outline-success">Present</button>
+<button type="button" class="btn btn-sm btn-outline-danger">Missing</button>
+<button type="button" class="btn btn-sm btn-outline-warning active">N/A</button>
+<button type="button" class="btn btn-sm btn-outline-secondary">None</button>
+{% when epitok::student::Presence::None %}
+<button type="button" class="btn btn-sm btn-outline-success">Present</button>
+<button type="button" class="btn btn-sm btn-outline-danger">Missing</button>
+<button type="button" class="btn btn-sm btn-outline-warning">N/A</button>
+<button type="button" class="btn btn-sm btn-outline-secondary active">None</button>
+{% when epitok::student::Presence::Failed %}
+<button type="button" class="btn btn-sm btn-outline-success">Present</button>
+<button type="button" class="btn btn-sm btn-outline-danger">Missing</button>
+<button type="button" class="btn btn-sm btn-outline-warning">N/A</button>
+<button type="button" class="btn btn-sm btn-outline-secondary">None</button>
+<button type="button" class="btn btn-sm btn-danger active" disabled>Failed</button>
+{% endmatch %}
