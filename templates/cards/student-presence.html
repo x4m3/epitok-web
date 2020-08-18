@@ -1,28 +1,22 @@
 {% match student.get_presence() %}
 {% when epitok::student::Presence::Present %}
-<button type="button" class="btn btn-sm btn-outline-success active">Present</button>
-<button type="button" class="btn btn-sm btn-outline-danger">Missing</button>
-<button type="button" class="btn btn-sm btn-outline-warning">N/A</button>
-<button type="button" class="btn btn-sm btn-outline-secondary">None</button>
+{% include "cards/presence/present_active.html" %}
+{% include "cards/presence/missing.html" %}
+{% include "cards/presence/not_applicable.html" %}
+{% include "cards/presence/none.html" %}
 {% when epitok::student::Presence::Missing %}
-<button type="button" class="btn btn-sm btn-outline-success">Present</button>
-<button type="button" class="btn btn-sm btn-outline-danger active">Missing</button>
-<button type="button" class="btn btn-sm btn-outline-warning">N/A</button>
-<button type="button" class="btn btn-sm btn-outline-secondary">None</button>
+{% include "cards/presence/present.html" %}
+{% include "cards/presence/missing_active.html" %}
+{% include "cards/presence/not_applicable.html" %}
+{% include "cards/presence/none.html" %}
 {% when epitok::student::Presence::NotApplicable %}
-<button type="button" class="btn btn-sm btn-outline-success">Present</button>
-<button type="button" class="btn btn-sm btn-outline-danger">Missing</button>
-<button type="button" class="btn btn-sm btn-outline-warning active">N/A</button>
-<button type="button" class="btn btn-sm btn-outline-secondary">None</button>
-{% when epitok::student::Presence::None %}
-<button type="button" class="btn btn-sm btn-outline-success">Present</button>
-<button type="button" class="btn btn-sm btn-outline-danger">Missing</button>
-<button type="button" class="btn btn-sm btn-outline-warning">N/A</button>
-<button type="button" class="btn btn-sm btn-outline-secondary active">None</button>
-{% when epitok::student::Presence::Failed %}
-<button type="button" class="btn btn-sm btn-outline-success">Present</button>
-<button type="button" class="btn btn-sm btn-outline-danger">Missing</button>
-<button type="button" class="btn btn-sm btn-outline-warning">N/A</button>
-<button type="button" class="btn btn-sm btn-outline-secondary">None</button>
-<button type="button" class="btn btn-sm btn-danger active" disabled>Failed</button>
+{% include "cards/presence/present.html" %}
+{% include "cards/presence/missing.html" %}
+{% include "cards/presence/not_applicable_active.html" %}
+{% include "cards/presence/none.html" %}
+{% when _ %} {# this is for None and Failed #}
+{% include "cards/presence/present.html" %}
+{% include "cards/presence/missing.html" %}
+{% include "cards/presence/not_applicable.html" %}
+{% include "cards/presence/none_active.html" %}
 {% endmatch %}

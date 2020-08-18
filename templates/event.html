@@ -8,7 +8,31 @@
     <h2>{{ event.module()|e }}</h2>
     <p>Starts at <b>{{ event.start()|e }}</b> and finishes at <b>{{ event.end()|e }}</b></p>
 
-    {% include "cards/students.html" %}
+    <form>
+        <button class="btn btn-outline-primary">Save</button>
+        <table class="table table-sm">
+            <thead>
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Login</th>
+                <th scope="col">Status</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for student in event.students %}
+            <tr>
+                <td>{{ student.get_name()|e }}</td>
+                <td>{{ student.get_login()|e }}</td>
+                <td>
+                    <div class="btn-group btn-group-sm btn-group-toggle" data-toggle="buttons">
+                        {% include "cards/student-presence.html" %}
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </form>
 </div>
 {% include "footer.html" %}
 </body>
