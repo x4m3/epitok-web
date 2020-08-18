@@ -11,16 +11,9 @@
     <code>{{ reason }}</code>
 
     <div>
-        <button id="go-back" class="custom-shadow margin-shadow btn btn-outline-primary">Go back home</button>
+        <a href="/" role="button" class="custom-shadow margin-shadow btn btn-outline-primary">Go back home</a>
     </div>
 </div>
 {% include "footer.html" %}
-
-<script>
-    document.getElementById('go-back').addEventListener('click', () => {
-        history.back();
-    });
-</script>
-
 </body>
 </html>
