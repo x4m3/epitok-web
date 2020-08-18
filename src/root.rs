@@ -1,7 +1,7 @@
 use actix_identity::Identity;
 use actix_web::{HttpResponse, Responder};
 use askama::Template;
-use epitok::event::{list_events, list_events_today, Event};
+use epitok::event::{list_events, Event};
 
 pub async fn root(id: Identity) -> impl Responder {
     match id.identity() {
@@ -33,16 +33,24 @@ struct HomePageTemplate<'a> {
 }
 
 async fn home_page(id: String) -> HttpResponse {
+    // let date = chrono::Local::today();
+    let date = chrono::NaiveDate::parse_from_str("2020-06-18", "%Y-%m-%d").unwrap();
+    let date_yyyymmdd = date.format("%Y-%m-%d").to_string();
+
     let mut events = Vec::new();
-    // if let Err(e) = list_events_today(&mut events, crate::cookie::get_autologin(&id)).await
-    if let Err(e) = list_events(&mut events, crate::cookie::get_autologin(&id), "2020-06-18").await
+    if let Err(e) = list_events(
+        &mut events,
+        crate::cookie::get_autologin(&id),
+        &date_yyyymmdd,
+    )
+    .await
     {
         return HttpResponse::InternalServerError()
             .content_type("text/html")
             .body(format!("could not get list of events from intra: {}", e));
     }
 
-    let formatted_date = chrono::Local::today().format("%A, %B %d").to_string();
+    let formatted_date = date.format("%A, %B %d").to_string();
 
     let content = HomePageTemplate {
         login: crate::cookie::get_login(&id),
