@@ -2,6 +2,7 @@ use actix_identity::Identity;
 use actix_web::{http, web, HttpResponse, Responder};
 use askama::Template;
 use epitok::event::{get_event, Event};
+use epitok::student::Presence;
 use serde::Deserialize;
 use std::collections::HashMap;
 
@@ -84,6 +85,27 @@ pub async fn save(
     }
 }
 
+/// Get login and presence from hashmap
+///
+/// Return None if either value is not present
+fn data_get_values(student: &HashMap<String, String>) -> Option<(String, Presence)> {
+    let mut login = String::new();
+    let mut presence: Option<Presence> = None;
+
+    for (key, val) in student {
+        if key == "name" {
+            login = val.clone();
+        }
+        if key == "value" {
+            presence = Some(Presence::from(val));
+        }
+    }
+    if login.is_empty() || presence.is_none() {
+        return None;
+    }
+    Some((login, presence.unwrap()))
+}
+
 async fn save_data(
     params: web::Path<Params>,
     data: web::Json<StudentsData>,
@@ -107,10 +129,21 @@ async fn save_data(
 
     let students = (data.0).0;
     for student in &students {
-        println!("{:?}", student);
-        for (key, val) in student {
-            println!("key: {} val: {}", key, val);
-        }
+        // Get values
+        let (login, presence) = match data_get_values(student) {
+            Some((login, presence)) => (login, presence),
+            None => {
+                return HttpResponse::InternalServerError().json("failed to get values");
+            }
+        };
+
+        // Apply values to event
+        event.set_student_presence(&login, presence);
+    }
+
+    if let Err(e) = event.save_changes(crate::cookie::get_autologin(&id)).await {
+        return HttpResponse::InternalServerError()
+            .json(format!("could not save information to intra: {}", e));
     }
 
     HttpResponse::Ok().json("ok")
