@@ -111,6 +111,7 @@ async fn save_data(
     data: web::Json<StudentsData>,
     id: String,
 ) -> HttpResponse {
+    // Fetch event information
     let mut event = match get_event(
         crate::cookie::get_autologin(&id),
         &params.year,
@@ -127,6 +128,15 @@ async fn save_data(
         }
     };
 
+    // Fetch students
+    if let Err(e) = event
+        .fetch_students(crate::cookie::get_autologin(&id))
+        .await
+    {
+        return HttpResponse::InternalServerError().json(format!("could not get students: {}", e));
+    }
+
+    // Get new student values
     let students = (data.0).0;
     for student in &students {
         // Get values
@@ -137,10 +147,11 @@ async fn save_data(
             }
         };
 
-        // Apply values to event
+        // Apply new values to event
         event.set_student_presence(&login, presence);
     }
 
+    // Save new values to intra
     if let Err(e) = event.save_changes(crate::cookie::get_autologin(&id)).await {
         return HttpResponse::InternalServerError()
             .json(format!("could not save information to intra: {}", e));

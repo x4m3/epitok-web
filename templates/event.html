@@ -7,6 +7,7 @@
     <h1>{{ event.title()|e }}</h1>
     <h2>{{ event.module()|e }}</h2>
     <p>Starts at <b>{{ event.start()|e }}</b> and finishes at <b>{{ event.end()|e }}</b></p>
+    <p><a class="card-link" href="https://intra.epitech.eu{{ event.intra_page()|e }}">See event on intra</a></p>
 
     <button id="save" class="btn btn-outline-primary">Save</button>
     <form>

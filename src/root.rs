@@ -34,8 +34,7 @@ struct HomePageTemplate<'a> {
 
 async fn home_page(id: String) -> HttpResponse {
     // let date = chrono::Local::today();
-    let date = chrono::NaiveDate::parse_from_str("2020-06-18", "%Y-%m-%d").unwrap();
-    // let date = chrono::NaiveDate::parse_from_str("2020-02-04", "%Y-%m-%d").unwrap();
+    let date = chrono::NaiveDate::parse_from_str("2020-06-30", "%Y-%m-%d").unwrap();
     let date_yyyymmdd = date.format("%Y-%m-%d").to_string();
 
     let mut events = Vec::new();
