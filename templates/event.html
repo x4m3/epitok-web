@@ -9,7 +9,30 @@
     <p>Starts at <b>{{ event.start()|e }}</b> and finishes at <b>{{ event.end()|e }}</b></p>
     <p><a class="card-link" href="https://intra.epitech.eu{{ event.intra_page()|e }}">See event on intra</a></p>
 
-    <button id="save" class="btn btn-outline-primary">Save</button>
+    <p>
+        <button id="save" class="btn btn-outline-primary">Save</button>
+        <button class="btn btn-outline-success">Set all as Present</button>
+        <button class="btn btn-outline-danger">Set all as Missing</button>
+    </p>
+
+    <div id="callback-save">
+        <div></div>
+    </div>
+
+    <div id="alert-success" class="alert alert-success alert-dismissible fade show" role="alert" style="display: none">
+        <strong>Changes saved</strong> You can do something else now.
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+    <div id="alert-failure" class="alert alert-danger alert-dismissible fade show" role="alert" style="display: none">
+        <strong>Could not save changes</strong> put reason here
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
     <form>
         <table class="table table-sm">
             <thead>
@@ -46,13 +69,21 @@
             // Convert HTML form to JSON array
             body: JSON.stringify($('form').serializeArray()),
         })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Success:', data);
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-            });
+            .then(function (response) {
+                if (!response.ok) {
+                    response.json().then(data => {
+                        $("#callback-save div").html(data);
+                    });
+                    throw Error(response.statusText);
+                }
+                return response;
+            }).then(function (response) {
+            console.log("ok");
+            $("#callback-save div").html("all good");
+        }).catch(function (error) {
+            console.log(error);
+            $("#callback-save div").html(error);
+        });
     });
 </script>
 </body>

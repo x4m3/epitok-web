@@ -153,8 +153,7 @@ async fn save_data(
 
     // Save new values to intra
     if let Err(e) = event.save_changes(crate::cookie::get_autologin(&id)).await {
-        return HttpResponse::InternalServerError()
-            .json(format!("could not save information to intra: {}", e));
+        return HttpResponse::InternalServerError().json(e.to_string());
     }
 
     HttpResponse::Ok().json("ok")
