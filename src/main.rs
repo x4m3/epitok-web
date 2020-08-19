@@ -47,10 +47,19 @@ async fn main() -> Result<()> {
                     .route("/signout", web::get().to(crate::auth::sign_out)),
             )
             // individual events
-            .service(web::scope("/event").route(
-                "/{year}/{module}/{instance}/{acti}/{event}",
-                web::get().to(crate::event::event),
-            ))
+            .service(
+                web::scope("/event")
+                    // view event
+                    .route(
+                        "/{year}/{module}/{instance}/{acti}/{event}",
+                        web::get().to(crate::event::event),
+                    )
+                    // save data to intra
+                    .route(
+                        "/{year}/{module}/{instance}/{acti}/{event}/save",
+                        web::post().to(crate::event::save),
+                    ),
+            )
 
         // TODO: 404 page
         // TODO: protections?
