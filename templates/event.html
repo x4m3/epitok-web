@@ -11,12 +11,11 @@
 
     <p>
         <button id="save" class="btn btn-outline-primary">Save</button>
-        <button class="btn btn-outline-success">Set all as Present</button>
-        <button class="btn btn-outline-danger">Set all as Missing</button>
+        <button id="set-all-present" class="btn btn-outline-success">Set all as Present</button>
+        <button id="set-all-missing" class="btn btn-outline-danger">Set all as Missing</button>
     </p>
 
-    <div id="callback-save">
-    </div>
+    <div id="callback-save"></div>
 
     <form>
         <table class="table table-sm">
@@ -45,13 +44,11 @@
 </div>
 {% include "footer.html" %}
 <script>
-    // When save button is clicked
     $("#save").click(function () {
         let URL = window.location.href + "/save";
         fetch(URL, {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
-            // Convert HTML form to JSON array
             body: JSON.stringify($('form').serializeArray()),
         })
             .then(function (response) {
@@ -67,6 +64,18 @@
         }).catch(function (error) {
             $("#callback-save").html('<div class="alert alert-danger alert-dismissible fade show" role="alert"><strong>Could not save changes</strong> ' + error + '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
         });
+    });
+
+    $("#set-all-present").click(function () {
+        for (let field of document.getElementsByTagName("form")[0].elements) {
+            if (field.value === "Present") {
+                field.checked = true;
+                field.parentElement.classList.add("active");
+            } else {
+                field.checked = false;
+                field.parentElement.classList.remove("active");
+            }
+        }
     });
 </script>
 </body>
