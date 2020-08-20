@@ -7,7 +7,7 @@
     <h1>{{ event.title()|e }}</h1>
     <h2>{{ event.module()|e }}</h2>
     <p>Starts at <b>{{ event.start()|e }}</b> and finishes at <b>{{ event.end()|e }}</b></p>
-    <p><a class="card-link" href="https://intra.epitech.eu{{ event.intra_page()|e }}">See event on intra</a></p>
+    <div><a href="https://intra.epitech.eu{{ event.intra_page()|e }}">See event on intra</a></div>
 
     <button id="save" class="custom-shadow margin-shadow btn btn-outline-primary">Save</button>
     <button id="scan" class="custom-shadow margin-shadow btn btn-outline-secondary">Scan QR codes</button>
@@ -71,29 +71,6 @@
 </div>
 {% include "footer.html" %}
 <script>
-    $("#save").click(function () {
-        $("#callback-save div").alert('close');
-        let URL = window.location.href + "/save";
-        fetch(URL, {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify($('form').serializeArray()),
-        })
-            .then(function (response) {
-                if (!response.ok) {
-                    response.json().then(data => {
-                        $("#callback-save").html('<div class="alert alert-danger alert-dismissible fade show" role="alert"><strong>Could not save changes</strong> ' + data + '.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
-                    });
-                    throw Error("this is normal, by throwing this error the error alert will show up.");
-                }
-                return response;
-            }).then(function (response) {
-            $("#callback-save").html('<div class="alert alert-success alert-dismissible fade show" role="alert"><strong>Changes saved</strong> You can do something else now.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
-        }).catch(function (error) {
-            $("#callback-save").html('<div class="alert alert-danger alert-dismissible fade show" role="alert"><strong>Could not save changes</strong> ' + error + '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
-        });
-    });
-
     /**
      * Set all students as the same presence status
      * @param presence - student login
@@ -128,6 +105,38 @@
             }
         }
     }
+
+    function saveButtonCallback() {
+        $("#save span").remove();
+        $("#save").attr("disabled", false).html("Save");
+    }
+
+    $("#save").click(function () {
+        $("#callback-save div").alert('close');
+        $("#save").html('<span class="spinner-grow spinner-grow-sm mr-2" role="status" aria-hidden="true"></span>Saving...').attr("disabled", true);
+        let URL = window.location.href + "/save";
+        fetch(URL, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify($('form').serializeArray()),
+        })
+            .then(function (response) {
+                if (!response.ok) {
+                    response.json().then(data => {
+                        $("#callback-save").html('<div class="alert alert-danger alert-dismissible fade show" role="alert"><strong>Could not save changes</strong> ' + data + '.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+                        saveButtonCallback();
+                    });
+                    throw Error("this is normal, by throwing this error the error alert will show up.");
+                }
+                return response;
+            }).then(function () {
+            $("#callback-save").html('<div class="alert alert-success alert-dismissible fade show" role="alert"><strong>Changes saved</strong> You can do something else now.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+            saveButtonCallback();
+        }).catch(function (error) {
+            $("#callback-save").html('<div class="alert alert-danger alert-dismissible fade show" role="alert"><strong>Could not save changes</strong> ' + error + '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+            saveButtonCallback();
+        });
+    });
 
     $("#set-all-present").click(function () {
         setAll("Present");
