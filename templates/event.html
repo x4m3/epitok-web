@@ -20,7 +20,7 @@
     <div id="callback-save"></div>
 
     <form>
-        <table class="table table-sm">
+        <table class="table table-sm table-responsive-sm">
             <thead>
             <tr>
                 <th scope="col">Name</th>
@@ -47,6 +47,7 @@
 {% include "footer.html" %}
 <script>
     $("#save").click(function () {
+        $("#callback-save div").alert('close');
         let URL = window.location.href + "/save";
         fetch(URL, {
             method: 'POST',
