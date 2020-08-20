@@ -69,6 +69,10 @@
         });
     });
 
+    /**
+     * Set all students as the same presence status
+     * @param presence - student login
+     */
     function setAll(presence) {
         for (let field of document.getElementsByTagName("form")[0].elements) {
             if (field.value === presence) {
@@ -77,6 +81,25 @@
             } else {
                 field.checked = false;
                 field.parentElement.classList.remove("active");
+            }
+        }
+    }
+
+    /**
+     * Set specific student a presence status
+     * @param login - student login
+     * @param presence - presence as seen in epitok (name of the enum value)
+     */
+    function setStudent(login, presence) {
+        for (let field of document.getElementsByTagName("form")[0].elements) {
+            if (field.name === login) {
+                if (field.value === presence) {
+                    field.checked = true;
+                    field.parentElement.classList.add("active");
+                } else {
+                    field.checked = false;
+                    field.parentElement.classList.remove("active");
+                }
             }
         }
     }
