@@ -9,13 +9,38 @@
     <p>Starts at <b>{{ event.start()|e }}</b> and finishes at <b>{{ event.end()|e }}</b></p>
     <p><a class="card-link" href="https://intra.epitech.eu{{ event.intra_page()|e }}">See event on intra</a></p>
 
-    <p>
-        <button id="save" class="btn btn-outline-primary">Save</button>
-        <button id="set-all-present" class="btn btn-outline-success">Set all as Present</button>
-        <button id="set-all-missing" class="btn btn-outline-danger">Set all as Missing</button>
-        <button id="set-all-not-applicable" class="btn btn-outline-warning">Set all as N/A</button>
-        <button id="set-all-none" class="btn btn-outline-secondary">Set all as None</button>
-    </p>
+    <button id="save" class="custom-shadow margin-shadow btn btn-outline-primary">Save</button>
+    <button id="scan" class="custom-shadow margin-shadow btn btn-outline-secondary">Scan QR codes</button>
+
+    <div class="btn-group" role="group">
+        <button id="set-all-present" class="custom-shadow margin-shadow btn btn-outline-success">Set all as Present
+        </button>
+        <button id="button-set-all-dropdown" type="button"
+                class="custom-shadow margin-shadow btn btn-outline-success dropdown-toggle dropdown-toggle-split"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <span class="sr-only">Toggle Dropdown</span>
+        </button>
+        <div class="dropdown-menu" aria-labelledby="button-set-all-dropdown">
+            <button id="set-all-missing" class="dropdown-item btn btn-danger">Missing</button>
+            <button id="set-all-not-applicable" class="dropdown-item btn btn-warning">N/A</button>
+            <button id="set-all-none" class="dropdown-item btn btn-secondary">None</button>
+        </div>
+    </div>
+
+    <div class="btn-group" role="group">
+        <button id="set-remaining-missing" class="custom-shadow margin-shadow btn btn-outline-danger">Set remaining as
+            Missing
+        </button>
+        <button id="button-set-remaining-dropdown" type="button"
+                class="custom-shadow margin-shadow btn btn-outline-danger dropdown-toggle dropdown-toggle-split"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <span class="sr-only">Toggle Dropdown</span>
+        </button>
+        <div class="dropdown-menu" aria-labelledby="button-set-all-dropdown">
+            <button id="set-remaining-present" class="dropdown-item btn btn-success">Present</button>
+            <button id="set-remaining-not-applicable" class="dropdown-item btn btn-warning">N/A</button>
+        </div>
+    </div>
 
     <div id="callback-save"></div>
 
