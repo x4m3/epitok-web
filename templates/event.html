@@ -13,6 +13,8 @@
         <button id="save" class="btn btn-outline-primary">Save</button>
         <button id="set-all-present" class="btn btn-outline-success">Set all as Present</button>
         <button id="set-all-missing" class="btn btn-outline-danger">Set all as Missing</button>
+        <button id="set-all-not-applicable" class="btn btn-outline-warning">Set all as N/A</button>
+        <button id="set-all-none" class="btn btn-outline-secondary">Set all as None</button>
     </p>
 
     <div id="callback-save"></div>
@@ -66,9 +68,9 @@
         });
     });
 
-    $("#set-all-present").click(function () {
+    function setAll(presence) {
         for (let field of document.getElementsByTagName("form")[0].elements) {
-            if (field.value === "Present") {
+            if (field.value === presence) {
                 field.checked = true;
                 field.parentElement.classList.add("active");
             } else {
@@ -76,6 +78,22 @@
                 field.parentElement.classList.remove("active");
             }
         }
+    }
+
+    $("#set-all-present").click(function () {
+        setAll("Present");
+    });
+
+    $("#set-all-missing").click(function () {
+        setAll("Missing");
+    });
+
+    $("#set-all-not-applicable").click(function () {
+        setAll("NotApplicable");
+    });
+
+    $("#set-all-none").click(function () {
+        setAll("None");
     });
 </script>
 </body>
