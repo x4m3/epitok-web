@@ -88,6 +88,32 @@
     }
 
     /**
+     * Set all students marked as None as the same presence status
+     * @param presence - student login
+     */
+    function setRemaining(presence) {
+        let usersToChange = [];
+        // check if none marked -> save login in array, set as unmarked
+        for (let field of document.getElementsByTagName("form")[0].elements) {
+            if (field.value === "None" && field.checked === true) {
+                usersToChange.push(field.name);
+                field.checked = false;
+                field.parentElement.classList.remove("active");
+            }
+        }
+        // for each element in array: if presence & login match -> set as marked
+        usersToChange.forEach(function (item, index, array) {
+            for (let field of document.getElementsByTagName("form")[0].elements) {
+                if (field.name === item && field.value === presence) {
+                    field.checked = true;
+                    field.parentElement.classList.add("active");
+                    break;
+                }
+            }
+        });
+    }
+
+    /**
      * Set specific student a presence status
      * @param login - student login
      * @param presence - presence as seen in epitok (name of the enum value)
@@ -106,6 +132,9 @@
         }
     }
 
+    /**
+     * Remove spinner from save button
+     */
     function saveButtonCallback() {
         $("#save span").remove();
         $("#save").attr("disabled", false).html("Save");
@@ -152,6 +181,18 @@
 
     $("#set-all-none").click(function () {
         setAll("None");
+    });
+
+    $("#set-remaining-present").click(function () {
+        setRemaining("Present");
+    });
+
+    $("#set-remaining-missing").click(function () {
+        setRemaining("Missing");
+    });
+
+    $("#set-remaining-not-applicable").click(function () {
+        setRemaining("NotApplicable");
     });
 </script>
 </body>
