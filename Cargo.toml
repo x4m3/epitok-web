@@ -3,6 +3,8 @@ name = "epitok-web"
 version = "0.1.0"
 authors = ["Philippe Loctaux <p@philippeloctaux.com>"]
 edition = "2018"
+repository = "https://github.com/x4m3/epitok-web"
+license = "MIT"
 
 [dependencies]
 # web framework
@@ -22,5 +24,4 @@ env_logger = "0.7.1"
 log = "0.4.11"
 
 # epitok
-epitok = { path = "../epitok" }
-#epitok = { git = "https://github.com/x4m3/epitok" }
+epitok = { git = "https://github.com/x4m3/epitok" }
