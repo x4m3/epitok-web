@@ -60,9 +60,6 @@ async fn main() -> Result<()> {
                         web::post().to(crate::event::save),
                     ),
             )
-
-        // TODO: 404 page
-        // TODO: protections?
     });
 
     info!("starting server on http://localhost:{}", port);

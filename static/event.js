@@ -139,8 +139,8 @@ $("#set-remaining-not-applicable").click(function () {
 });
 
 /**
- * QR Scanner
- * https://github.com/nimiq/qr-scanner
+ * QR Scanner from nimiq
+ * https://github.com/nimiq/qr-scanner/tree/e8a77de
  * MIT
  */
 import QrScanner from "/static/qr-scanner/qr-scanner.min.js";
