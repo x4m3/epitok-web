@@ -625,7 +625,8 @@ dependencies = [
 [[package]]
 name = "epitok"
 version = "0.1.0"
-source = "git+https://github.com/x4m3/epitok#5c2793263bfd8fc67183930035897960da9edd4d"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "e2dd2077d2bfb3c0227f8ec746d1fe452b5d621834246e56432e279ae9185846"
 dependencies = [
  "chrono",
  "regex",

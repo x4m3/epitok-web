@@ -24,4 +24,4 @@ env_logger = "0.7.1"
 log = "0.4.11"
 
 # epitok
-epitok = { git = "https://github.com/x4m3/epitok" }
+epitok = "0.1.0"
