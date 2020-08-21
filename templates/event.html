@@ -44,6 +44,8 @@
 
     <div id="callback-save"></div>
 
+    <video style="display: none"></video>
+
     <form>
         <table class="table table-sm table-responsive-sm">
             <thead>
@@ -70,130 +72,6 @@
     </form>
 </div>
 {% include "footer.html" %}
-<script>
-    /**
-     * Set all students as the same presence status
-     * @param presence - student login
-     */
-    function setAll(presence) {
-        for (let field of document.getElementsByTagName("form")[0].elements) {
-            if (field.value === presence) {
-                field.checked = true;
-                field.parentElement.classList.add("active");
-            } else {
-                field.checked = false;
-                field.parentElement.classList.remove("active");
-            }
-        }
-    }
-
-    /**
-     * Set all students marked as None as the same presence status
-     * @param presence - student login
-     */
-    function setRemaining(presence) {
-        let usersToChange = [];
-        // check if none marked -> save login in array, set as unmarked
-        for (let field of document.getElementsByTagName("form")[0].elements) {
-            if (field.value === "None" && field.checked === true) {
-                usersToChange.push(field.name);
-                field.checked = false;
-                field.parentElement.classList.remove("active");
-            }
-        }
-        // for each element in array: if presence & login match -> set as marked
-        usersToChange.forEach(function (item, index, array) {
-            for (let field of document.getElementsByTagName("form")[0].elements) {
-                if (field.name === item && field.value === presence) {
-                    field.checked = true;
-                    field.parentElement.classList.add("active");
-                    break;
-                }
-            }
-        });
-    }
-
-    /**
-     * Set specific student a presence status
-     * @param login - student login
-     * @param presence - presence as seen in epitok (name of the enum value)
-     */
-    function setStudent(login, presence) {
-        for (let field of document.getElementsByTagName("form")[0].elements) {
-            if (field.name === login) {
-                if (field.value === presence) {
-                    field.checked = true;
-                    field.parentElement.classList.add("active");
-                } else {
-                    field.checked = false;
-                    field.parentElement.classList.remove("active");
-                }
-            }
-        }
-    }
-
-    /**
-     * Remove spinner from save button
-     */
-    function saveButtonCallback() {
-        $("#save span").remove();
-        $("#save").attr("disabled", false).html("Save");
-    }
-
-    $("#save").click(function () {
-        $("#callback-save div").alert('close');
-        $("#save").html('<span class="spinner-grow spinner-grow-sm mr-2" role="status" aria-hidden="true"></span>Saving...').attr("disabled", true);
-        let URL = window.location.href + "/save";
-        fetch(URL, {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify($('form').serializeArray()),
-        })
-            .then(function (response) {
-                if (!response.ok) {
-                    response.json().then(data => {
-                        $("#callback-save").html('<div class="alert alert-danger alert-dismissible fade show" role="alert"><strong>Could not save changes</strong> ' + data + '.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
-                        saveButtonCallback();
-                    });
-                    throw Error("this is normal, by throwing this error the error alert will show up.");
-                }
-                return response;
-            }).then(function () {
-            $("#callback-save").html('<div class="alert alert-success alert-dismissible fade show" role="alert"><strong>Changes saved</strong> You can do something else now.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
-            saveButtonCallback();
-        }).catch(function (error) {
-            $("#callback-save").html('<div class="alert alert-danger alert-dismissible fade show" role="alert"><strong>Could not save changes</strong> ' + error + '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
-            saveButtonCallback();
-        });
-    });
-
-    $("#set-all-present").click(function () {
-        setAll("Present");
-    });
-
-    $("#set-all-missing").click(function () {
-        setAll("Missing");
-    });
-
-    $("#set-all-not-applicable").click(function () {
-        setAll("NotApplicable");
-    });
-
-    $("#set-all-none").click(function () {
-        setAll("None");
-    });
-
-    $("#set-remaining-present").click(function () {
-        setRemaining("Present");
-    });
-
-    $("#set-remaining-missing").click(function () {
-        setRemaining("Missing");
-    });
-
-    $("#set-remaining-not-applicable").click(function () {
-        setRemaining("NotApplicable");
-    });
-</script>
+<script src="/static/event.js" type="module"></script>
 </body>
 </html>
