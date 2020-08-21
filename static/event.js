@@ -156,12 +156,30 @@ $(async function () {
     }
 });
 
+function showScannedStudentAlert(student) {
+    $("#scanned-student-alert").html('<div class="alert alert-success alert-dismissible fade show" role="alert">Student <b>' + student + '</b> has been set as <b>Present</b>.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+}
+
 /**
  * When QR code is detected
  */
-const qrScanner = new QrScanner(document.getElementsByTagName("video")[0], function (result) {
-    if (setStudent(result, "Present") === true) {
-        // TODO: display alert
+const qrScanner = new QrScanner(document.getElementsByTagName("video")[0], function (scannedString) {
+    if (setStudent(scannedString, "Present") === true) {
+        // Close current alert if element is present
+        if ($("#scanned-student-alert div").length) {
+            $("#scanned-student-alert div").alert('close');
+        }
+
+        // Check if alert is already present
+        if ($("#scanned-student-alert div").length) {
+            // Wait for previous alert to be closed (wait for css transitions)
+            $("#scanned-student-alert div").on("closed.bs.alert", function () {
+                showScannedStudentAlert(scannedString);
+            });
+        } else {
+            // If alert is not already present
+            showScannedStudentAlert(scannedString);
+        }
     }
 });
 
