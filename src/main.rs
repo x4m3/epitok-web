@@ -1,7 +1,9 @@
 mod auth;
 mod cookie;
 mod event;
+mod list_events;
 mod root;
+mod signin;
 
 use actix_identity::{CookieIdentityPolicy, IdentityService};
 use actix_web::{middleware, web, App, HttpServer};
@@ -39,27 +41,27 @@ async fn main() -> Result<()> {
             // serve static files
             .service(actix_files::Files::new("/static", "static"))
             // root page
-            .route("/", web::get().to(crate::root::root))
+            .route("/", web::get().to(root::root))
             // authentication
             .service(
                 web::scope("/auth")
-                    .route("/signin", web::post().to(crate::auth::sign_in))
-                    .route("/signout", web::get().to(crate::auth::sign_out)),
+                    .route("/signin", web::post().to(auth::sign_in))
+                    .route("/signout", web::get().to(auth::sign_out)),
             )
             // root page with specific date
-            .route("/{date}", web::get().to(crate::root::date))
+            .route("/{date}", web::get().to(list_events::specific_date))
             // individual events
             .service(
                 web::scope("/event")
                     // view event
                     .route(
                         "/{year}/{module}/{instance}/{acti}/{event}",
-                        web::get().to(crate::event::event),
+                        web::get().to(event::event),
                     )
                     // save data to intra
                     .route(
                         "/{year}/{module}/{instance}/{acti}/{event}/save",
-                        web::post().to(crate::event::save),
+                        web::post().to(event::save),
                     ),
             )
     });
