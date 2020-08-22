@@ -7,6 +7,8 @@ This project is written in Rust.
 
 Licensed under [MIT license](license.txt).
 
+An instance is available at [token.epi.today](https://token.epi.today). If you do not trust this instance or do not want to enter your credentials, feel free to [deploy](#deployment) your own.
+
 ## technologies
 
 * [epitok](https://github.com/x4m3/epitok) for the main logic
@@ -34,3 +36,5 @@ Run `cargo build --release` to compile with optimisations enabled.
 The binary will be available at `./target/release/epitok-web`.
 
 Place the binary and the folder `static/` in the same folder, it contains client side css and javascript.
+
+You can also deploy with Docker by building the [Dockerfile](Dockerfile) and using it. The instance [token.epi.today](https://token.epi.today) is deployed that way.

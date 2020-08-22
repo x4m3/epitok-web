@@ -2,6 +2,8 @@ FROM ekidd/rust-musl-builder:stable as builder
 
 # build depedencies first, that way they will be cached
 # there is a very high chance that project's files will be updated rather than dependencies
+
+# note: this will be useful if you build it locally, on CI it builds from scratch every time.
 RUN USER=rust cargo new --bin epitok-web
 WORKDIR ./epitok-web
 COPY ./Cargo.lock ./Cargo.lock
