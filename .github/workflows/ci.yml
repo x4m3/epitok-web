@@ -61,6 +61,6 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
       - name: Build Docker image
-        run: docker build -t epitok-web:latest .
+        run: docker build -t x4m3/epitok-web:latest .
       - name: Push Docker image
-        run: docker push epitok-web:latest
+        run: docker push x4m3/epitok-web:latest
