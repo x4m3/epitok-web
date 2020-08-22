@@ -48,3 +48,19 @@ jobs:
         with:
           command: clippy
           args: -- -D warnings
+
+  docker:
+    needs: clippy
+    name: Docker
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master'
+    steps:
+      - uses: actions/checkout@v2
+      - uses: azure/docker-login@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+      - name: Build Docker image
+        run: docker build -t epitok-web:latest .
+      - name: Push Docker image
+        run: docker push epitok-web:latest
