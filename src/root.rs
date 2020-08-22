@@ -1,11 +1,11 @@
 use actix_identity::Identity;
-use actix_web::{HttpResponse, Responder};
+use actix_web::{HttpRequest, HttpResponse, Responder};
 use askama::Template;
 use epitok::event::{list_events, Event};
 
 pub async fn root(id: Identity) -> impl Responder {
     match id.identity() {
-        Some(id) => home_page(id).await,
+        Some(id) => home_page(id, None).await,
         None => sign_in_page(),
     }
 }
@@ -32,9 +32,24 @@ struct HomePageTemplate<'a> {
     date: &'a str,
 }
 
-async fn home_page(id: String) -> HttpResponse {
-    // let date = chrono::Local::today();
-    let date = chrono::NaiveDate::parse_from_str("2020-06-30", "%Y-%m-%d").unwrap();
+pub async fn date(id: Identity, req: HttpRequest) -> impl Responder {
+    match id.identity() {
+        Some(id) => match req.match_info().get("date") {
+            Some(date) => home_page(id, Some(date)).await,
+            None => HttpResponse::BadRequest().body("invalid date requested"),
+        },
+        None => sign_in_page(),
+    }
+}
+
+async fn home_page(id: String, date: Option<&str>) -> HttpResponse {
+    let date = match date {
+        Some(date) => match chrono::NaiveDate::parse_from_str(date, "%Y-%m-%d") {
+            Ok(date) => date,
+            Err(_) => return HttpResponse::BadRequest().body("invalid date requested"),
+        },
+        None => chrono::Local::today().naive_local(),
+    };
     let date_yyyymmdd = date.format("%Y-%m-%d").to_string();
 
     let mut events = Vec::new();

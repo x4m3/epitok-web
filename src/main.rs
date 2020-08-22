@@ -46,6 +46,8 @@ async fn main() -> Result<()> {
                     .route("/signin", web::post().to(crate::auth::sign_in))
                     .route("/signout", web::get().to(crate::auth::sign_out)),
             )
+            // root page with specific date
+            .route("/{date}", web::get().to(crate::root::date))
             // individual events
             .service(
                 web::scope("/event")
