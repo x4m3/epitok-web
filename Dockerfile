@@ -28,5 +28,8 @@ COPY --from=builder /home/rust/src/epitok-web/target/x86_64-unknown-linux-musl/r
 
 WORKDIR ${APP_PATH}
 
+# add static folder required for runtime
+ADD static/ ./static/
+
 EXPOSE 4343
 CMD ["./epitok-web"]
