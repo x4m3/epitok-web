@@ -6,12 +6,18 @@ mod root;
 mod signin;
 
 use actix_identity::{CookieIdentityPolicy, IdentityService};
-use actix_web::{middleware, web, App, HttpServer};
+use actix_web::{middleware, web, App, HttpResponse, HttpServer};
 use rand::Rng;
 use std::{env, io::Result, net::SocketAddr};
 
 #[macro_use]
 extern crate log;
+
+fn robots_txt() -> HttpResponse {
+    HttpResponse::Ok()
+        .content_type("text/plain; charset=utf-8")
+        .body(include_str!("../static/robots.txt"))
+}
 
 #[actix_rt::main]
 async fn main() -> Result<()> {
@@ -42,6 +48,8 @@ async fn main() -> Result<()> {
             .service(actix_files::Files::new("/static", "static"))
             // root page
             .route("/", web::get().to(root::root))
+            // robots.txt
+            .route("/robots.txt", web::get().to(robots_txt))
             // authentication
             .service(
                 web::scope("/auth")
