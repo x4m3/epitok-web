@@ -14,6 +14,7 @@ RUN rm src/*
 # build actual project
 ADD src/ ./src/
 ADD templates/ ./templates/
+ADD static/ ./static/
 RUN rm ./target/x86_64-unknown-linux-musl/release/deps/epitok_web*
 RUN cargo build --release
 
@@ -26,9 +27,6 @@ ARG APP_PATH=/usr/src/app
 COPY --from=builder /home/rust/src/epitok-web/target/x86_64-unknown-linux-musl/release/epitok-web ${APP_PATH}/epitok-web
 
 WORKDIR ${APP_PATH}
-
-# add static folder required for runtime
-ADD static/ ./static/
 
 EXPOSE 4343
 CMD ["./epitok-web"]
