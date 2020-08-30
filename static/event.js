@@ -188,6 +188,10 @@ const qrScanner = new QrScanner(document.getElementsByTagName("video")[0], funct
  */
 async function startScanning() {
     $("#save").attr("disabled", true);
+    $("#set-all-present").attr("disabled", true);
+    $("#button-set-all-dropdown").attr("disabled", true);
+    $("#set-remaining-missing").attr("disabled", true);
+    $("#button-set-remaining-dropdown").attr("disabled", true);
     $("#scan").html("Stop scanning").addClass("scanning");
     $("video").show();
     qrScanner.start();
@@ -204,6 +208,10 @@ function stopScanning() {
     qrScanner.destroy();
     $("video").hide();
     $("#save").attr("disabled", false);
+    $("#set-all-present").attr("disabled", false);
+    $("#button-set-all-dropdown").attr("disabled", false);
+    $("#set-remaining-missing").attr("disabled", false);
+    $("#button-set-remaining-dropdown").attr("disabled", false);
     $("#scan").html("Scan QR codes").removeClass("scanning");
 }
 
