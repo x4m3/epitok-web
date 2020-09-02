@@ -25,3 +25,9 @@ footer {
     margin-top: 15px;
     margin-bottom: 15px;
 }
+
+/* for yesterday and tomorrow buttons */
+.date-button {
+    margin-left: 10px;
+    margin-right: 10px;
+}

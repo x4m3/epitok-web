@@ -9,6 +9,8 @@ struct ListEventsTemplate<'a> {
     login: &'a str,
     events: Vec<Event>,
     date: &'a str,
+    yesterday: &'a str,
+    tomorrow: &'a str,
 }
 
 pub async fn specific_date(id: Identity, req: HttpRequest) -> impl Responder {
@@ -45,11 +47,19 @@ pub async fn render_events(id: String, date: Option<&str>) -> HttpResponse {
     }
 
     let formatted_date = date.format("%A, %B %d").to_string();
+    let yesterday = (date - chrono::Duration::days(1))
+        .format("%Y-%m-%d")
+        .to_string();
+    let tomorrow = (date + chrono::Duration::days(1))
+        .format("%Y-%m-%d")
+        .to_string();
 
     let content = ListEventsTemplate {
         login: crate::cookie::get_login(&id),
         events,
         date: &formatted_date,
+        yesterday: &yesterday,
+        tomorrow: &tomorrow,
     };
     match content.render() {
         Ok(content) => HttpResponse::Ok().content_type("text/html").body(content),
