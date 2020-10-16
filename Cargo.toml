@@ -14,7 +14,7 @@ actix-files = "0.2.2"
 actix-identity = "0.2.1"
 serde = "1.0.116"
 rand = "0.7.3"
-chrono = "0.4.18"
+chrono = "0.4.19"
 
 # templating
 askama = "0.10.3"
