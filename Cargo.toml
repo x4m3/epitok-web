@@ -17,7 +17,7 @@ rand = "0.7.3"
 chrono = "0.4.19"
 
 # templating
-askama = "0.10.3"
+askama = "0.10.5"
 
 # environment
 env_logger = "0.8.1"
