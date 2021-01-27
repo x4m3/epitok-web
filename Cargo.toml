@@ -21,7 +21,7 @@ askama = "0.10.5"
 
 # environment
 env_logger = "0.8.2"
-log = "0.4.13"
+log = "0.4.14"
 
 # epitok
 epitok = "0.2.0"
