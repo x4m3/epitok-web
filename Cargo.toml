@@ -13,7 +13,7 @@ actix-rt = "1.1.1"
 actix-files = "0.2.2"
 actix-identity = "0.2.1"
 serde = "1.0.123"
-rand = "0.8.2"
+rand = "0.8.3"
 chrono = "0.4.19"
 
 # templating
