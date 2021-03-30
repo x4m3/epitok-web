@@ -9,7 +9,7 @@ license = "MIT"
 [dependencies]
 # web framework
 actix-web = "2.0.0"
-actix-rt = "2.1.0"
+actix-rt = "2.2.0"
 actix-files = "0.2.2"
 actix-identity = "0.2.1"
 serde = "1.0.125"
